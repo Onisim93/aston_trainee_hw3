@@ -1,0 +1,535 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1
+      author: Onisim Albarov
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: attraction_services
+      changes:
+        - dropTable:
+            tableName: attraction_services
+  - changeSet:
+      id: 2
+      author: Onisim Albarov
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: service
+      changes:
+        - dropTable:
+            tableName: service
+  - changeSet:
+      id: 3
+      author: Onisim Albarov
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: attraction
+      changes:
+        - dropTable:
+            tableName: attraction
+  - changeSet:
+      id: 4
+      author: Onisim Albarov
+      preConditions:
+        - onFail: MARK_RAN
+        - tableExists:
+            tableName: locality
+      changes:
+        - dropTable:
+            tableName: locality
+
+  - changeSet:
+      id: 5
+      author: Onisim Albarov
+      changes:
+        - sql:
+            sql: CREATE SEQUENCE attraction_sequence START WITH 1 INCREMENT BY 1 MINVALUE 1;
+
+  - changeSet:
+      id: 6
+      author: Onisim Albarov
+      changes:
+        - sql:
+            sql: CREATE SEQUENCE locality_sequence START WITH 1 INCREMENT BY 1 MINVALUE 1;
+  - changeSet:
+      id: 7
+      author: Onisim Albarov
+      changes:
+        - sql:
+            sql: CREATE SEQUENCE service_sequence START WITH 1 INCREMENT BY 1 MINVALUE 1;
+
+  - changeSet:
+      id: 8
+      author: Onisim Albarov
+      changes:
+        - createTable:
+            tableName: attraction
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueSequenceNext: attraction_sequence
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: creation_date
+                  type: DATE
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1024)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: type
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: locality_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 9
+      author: Onisim Albarov
+      changes:
+        - createTable:
+            tableName: locality
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueSequenceNext: locality_sequence
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: population
+                  type: INT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: has_metro
+                  type: BOOLEAN
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 10
+      author: Onisim Albarov
+      changes:
+        - createTable:
+            tableName: service
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  defaultValueSequenceNext: service_sequence
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: VARCHAR(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: VARCHAR(1024)
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 11
+      author: Onisim Albarov
+      changes:
+        - createTable:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: service_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+  - changeSet:
+      id: 12
+      author: Onisim Albarov
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: attraction
+            baseColumnNames: locality_id
+            referencedTableName: locality
+            referencedColumnNames: id
+            constraintName: fk_attraction_locality
+            onDelete: CASCADE
+  - changeSet:
+      id: 13
+      author: Onisim Albarov
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: attraction_services
+            baseColumnNames: attraction_id
+            referencedTableName: attraction
+            referencedColumnNames: id
+            constraintName: fk_attraction_services_attraction
+            onDelete: CASCADE
+  - changeSet:
+      id: 14
+      author: Onisim Albarov
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: attraction_services
+            baseColumnNames: service_id
+            referencedTableName: service
+            referencedColumnNames: id
+            constraintName: fk_attraction_services_service
+            onDelete: CASCADE
+  - changeSet:
+      id: 15
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: locality
+            columns:
+              - column:
+                  name: name
+                  value: "Самара"
+              - column:
+                  name: population
+                  value: 2_000_000
+              - column:
+                  name: has_metro
+                  value: "true"
+  - changeSet:
+      id: 16
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: locality
+            columns:
+              - column:
+                  name: name
+                  value: "Санкт-петербург"
+              - column:
+                  name: population
+                  value: 5_600_000
+              - column:
+                  name: has_metro
+                  value: "true"
+  - changeSet:
+      id: 17
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Национальный парк Самарская лука"
+              - column:
+                  name: creation_date
+                  value: "1984-04-28"
+              - column:
+                  name: description
+                  value: "Самарская Лука — один из уникальных уголков России. Топоним «Самарская Лука» включает в себя несколько понятий: излучина Волги у Жигулёвских гор; восточный участок Приволжской возвышенности; полуостровная территория, окружённая одноимённой излучиной Волги и Усинским заливом Куйбышевского водохранилища."
+              - column:
+                  name: type
+                  value: "RESERVE"
+              - column:
+                  name: locality_id
+                  value: "1"
+  - changeSet:
+      id: 18
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Музей авиации и космонавтики"
+              - column:
+                  name: creation_date
+                  value: "1977-01-12"
+              - column:
+                  name: description
+                  value: "Музей авиации и космонавтики — это место, которое обязательно стоит посетить всем, кто интересуется космосом и историей авиации. В музее представлены личные вещи и фотографии Сергея Королева, а также экспонаты из разных эпох, связанных с развитием воздухоплавания и покорением космоса."
+              - column:
+                  name: type
+                  value: "MUSEUM"
+              - column:
+                  name: locality_id
+                  value: "1"
+  - changeSet:
+      id: 19
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Екатерининский дворец"
+              - column:
+                  name: creation_date
+                  value: "1717-01-01"
+              - column:
+                  name: description
+                  value: "Большо́й Екатери́нинский дворе́ц (Большо́й Царскосе́льский дворе́ц, Екатери́нинский дворе́ц, Большо́й дворе́ц[1], Стáрый дворе́ц[2]) — императорский дворец, официальная летняя резиденция трёх российских правительниц: Екатерины I, Елизаветы Петровны, Екатерины II. Дворец был построен в 26 км к югу от центра Санкт-Петербурга в его пригороде Царское Село (ныне в составе Пушкинского района Санкт-Петербурга)."
+              - column:
+                  name: type
+                  value: "PALACE"
+              - column:
+                  name: locality_id
+                  value: "2"
+  - changeSet:
+      id: 20
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction
+            columns:
+              - column:
+                  name: name
+                  value: "Эрмитаж"
+              - column:
+                  name: creation_date
+                  value: "1764-03-01"
+              - column:
+                  name: description
+                  value: "Эрмита́ж (от фр. ermitage — место уединения, келья, приют отшельника, затворничество), Госуда́рственный Эрмита́ж (сокр. ГЭ; до 1917 года — Императорский Эрмитаж) — российский государственный художественный и культурно-исторический музей в Санкт-Петербурге, одно из крупнейших в мире учреждений подобного рода."
+              - column:
+                  name: type
+                  value: "MUSEUM"
+              - column:
+                  name: locality_id
+                  value: "2"
+  - changeSet:
+      id: 21
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "Свободное посещение."
+              - column:
+                  name: description
+                  value: "Свободное посещение без гида. До закрытия."
+  - changeSet:
+      id: 22
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "Индивидуальная экскурсия с гидом."
+              - column:
+                  name: description
+                  value: "Индвидуальная экскурсия только для Вас, с профессиональным гидом. Время экскурсии - 2 часа."
+  - changeSet:
+      id: 23
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: service
+            columns:
+              - column:
+                  name: name
+                  value: "Групповая экскурсия с гидом."
+              - column:
+                  name: description
+                  value: "Групповая экскурсия с профессиональным гидом. Время экскурсии - 3 часа."
+  - changeSet:
+      id: 24
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "1"
+              - column:
+                  name: service_id
+                  value: "1"
+
+  - changeSet:
+      id: 25
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "1"
+              - column:
+                  name: service_id
+                  value: "2"
+  - changeSet:
+      id: 26
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "1"
+              - column:
+                  name: service_id
+                  value: "3"
+
+  - changeSet:
+      id: 27
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "2"
+              - column:
+                  name: service_id
+                  value: "1"
+
+  - changeSet:
+      id: 28
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "2"
+              - column:
+                  name: service_id
+                  value: "2"
+  - changeSet:
+      id: 29
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "2"
+              - column:
+                  name: service_id
+                  value: "3"
+
+  - changeSet:
+      id: 30
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "3"
+              - column:
+                  name: service_id
+                  value: "1"
+
+  - changeSet:
+      id: 31
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "3"
+              - column:
+                  name: service_id
+                  value: "2"
+  - changeSet:
+      id: 32
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "3"
+              - column:
+                  name: service_id
+                  value: "3"
+  - changeSet:
+      id: 33
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "4"
+              - column:
+                  name: service_id
+                  value: "1"
+
+  - changeSet:
+      id: 34
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "4"
+              - column:
+                  name: service_id
+                  value: "2"
+  - changeSet:
+      id: 35
+      author: Onisim Albarov
+      changes:
+        - insert:
+            tableName: attraction_services
+            columns:
+              - column:
+                  name: attraction_id
+                  value: "4"
+              - column:
+                  name: service_id
+                  value: "3"
+
+
+
+
+
+
+
+
+
+
