@@ -14,14 +14,18 @@ TestContainers автоматически настроит и запустит �
 
 ### Инструкция по запуску
 
-Подтянуть проект в локальный репозиторий и в папке проекта, в консоли ввести команду docker-compose up --build. На локальной машине должен быть запущен Docker.
+Подтянуть проект в локальный репозиторий и в папке проекта, в консоли ввести следующие команды:
+    ./mvnw clean package        //для сборки проекта
+    docker-compose up --build   //для запуска проекта 
+
+На локальной машине должен быть запущен Docker.
 
 ## Resources
 
 ### Locality
 
 - Endpoint: /api/locality
-    - GET: Retrieve all localities
+    - GET: Retrieve all localities (optional params: withRec (true/false) (загружает данные о погоде из внешнего API))
     - POST: Create a new locality
         - Fields:
             - name: String (required)
@@ -29,7 +33,7 @@ TestContainers автоматически настроит и запустит �
             - hasMetro: Boolean (required)
 
 - Endpoint: /api/locality/{id}
-    - GET: Retrieve locality by ID
+    - GET: Retrieve locality by ID (optional params: withRec (true/false) (загружает данные о погоде из внешнего API))
     - PUT: Update locality by ID
         - Fields:
             - id: Long (required)
@@ -40,7 +44,7 @@ TestContainers автоматически настроит и запустит �
 ### Attraction
 
 - Endpoint: /api/attraction
-    - GET: Retrieve all attractions (optional filters: sort_by, type, locality_name, withRec)
+    - GET: Retrieve all attractions (optional filters: sort_by, type, locality_name)
     - POST: Create a new attraction
         - Fields:
             - name: String (required)
