@@ -1,4 +1,4 @@
-package org.example.aston_trainee_hw3.web;
+package org.example.aston_trainee_hw3.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.aston_trainee_hw3.dto.LocalityDto;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller for handling CRUD operations related to localities.
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/locality")
@@ -17,14 +20,14 @@ public class LocalityController {
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public List<LocalityDto> getAll() {
-        return service.findAll();
+    public List<LocalityDto> getAll(@RequestParam(required = false, defaultValue = "false") String withRec) {
+        return Boolean.parseBoolean(withRec) ? service.findAllWithRec() : service.findAll();
     }
 
     @GetMapping("/{id:\\d+}")
     @ResponseStatus(HttpStatus.OK)
-    public LocalityDto getById(@PathVariable Long id) {
-        return service.findById(id);
+    public LocalityDto getById(@PathVariable Long id, @RequestParam(required = false, defaultValue = "false") String withRec) {
+        return Boolean.parseBoolean(withRec) ? service.findByIdWithRec(id) : service.findById(id);
     }
 
     @PostMapping

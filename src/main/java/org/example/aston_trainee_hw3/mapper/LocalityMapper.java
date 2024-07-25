@@ -15,6 +15,7 @@ public interface LocalityMapper {
     LocalityMapper INSTANCE = Mappers.getMapper(LocalityMapper.class);
 
     @Mapping(source = "attractionEntities", target = "attractionEntities")
+    @Mapping(target = "recommendations", ignore = true)
     LocalityDto toDto(LocalityEntity entity);
 
     @Mapping(target = "attractionEntities", ignore = true)
@@ -23,13 +24,16 @@ public interface LocalityMapper {
     List<LocalityDto> toDtoList(List<LocalityEntity> entities);
 
     default List<AttractionDto> mapAttractionEntities(List<AttractionEntity> entities) {
-        return entities.stream().map(entity ->
-                AttractionDto.builder()
-                        .id(entity.getId())
-                        .description(entity.getDescription())
-                .name(entity.getName())
-                .type(entity.getType())
-                .creationDate(entity.getCreationDate())
-                .build()).toList();
+        if (entities != null && !entities.isEmpty()) {
+            return entities.stream().map(entity ->
+                    AttractionDto.builder()
+                            .id(entity.getId())
+                            .description(entity.getDescription())
+                            .name(entity.getName())
+                            .type(entity.getType())
+                            .creationDate(entity.getCreationDate())
+                            .build()).toList();
+        }
+        return List.of();
     }
 }

@@ -1,4 +1,4 @@
-package org.example.aston_trainee_hw3.web;
+package org.example.aston_trainee_hw3.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.aston_trainee_hw3.dto.ServiceDto;
@@ -8,6 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * Controller for handling CRUD operations related to services.
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping(("api/service"))

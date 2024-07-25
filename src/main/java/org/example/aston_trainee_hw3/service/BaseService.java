@@ -1,9 +1,11 @@
 package org.example.aston_trainee_hw3.service;
 
+import org.example.aston_trainee_hw3.exception.EntityNotFoundException;
+
 import java.util.List;
 
 /**
- * Base interface for defining common operations on entities.
+ * Base interface for defining CRUD operations on entities.
  *
  * @param <T> the type of entity managed by this service
  * @param <K> the type of the entity's identifier (primary key)
@@ -16,7 +18,7 @@ public interface BaseService<T, K> {
      * @param id the ID of the entity to find
      * @return the found entity
      *
-     * @throws jakarta.persistence.EntityNotFoundException if an entity not found
+     * @throws EntityNotFoundException if an entity not found
      */
     T findById(K id);
 
@@ -39,7 +41,7 @@ public interface BaseService<T, K> {
      * Deletes an entity by its ID.
      *
      * @param id the ID of the entity to delete
-     * @throws jakarta.persistence.EntityNotFoundException if an entity not found
+     * @throws EntityNotFoundException if an entity not found
      */
     void deleteById(K id);
 
@@ -50,7 +52,7 @@ public interface BaseService<T, K> {
      * @param id     an id of the entity
      * @return the updated entity
      *
-     * @throws jakarta.persistence.EntityNotFoundException if an entity not found
+     * @throws EntityNotFoundException if an entity not found
      */
     T update(T entity, K id);
 }

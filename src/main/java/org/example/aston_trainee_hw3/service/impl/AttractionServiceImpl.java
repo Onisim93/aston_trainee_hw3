@@ -19,6 +19,10 @@ import java.util.List;
 
 import static org.example.aston_trainee_hw3.mapper.AttractionMapper.INSTANCE;
 
+/**
+ * Implementation of {@link AttractionService} interface.
+ * Provides CRUD operations and additional methods to manage attractions.
+ */
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -94,18 +98,37 @@ public class AttractionServiceImpl implements AttractionService {
     }
 
 
+    /**
+     * Validates if the provided ID is valid (i.e., not null and greater than zero).
+     *
+     * @param id the ID to validate
+     * @throws InvalidEntityException if the ID is null or less than or equal to zero
+     */
     private void validateId(Long id) {
         if (id == null || id <= 0) {
             throw new InvalidEntityException("Entity Id can't be null or less than 0");
         }
     }
 
+    /**
+     * Validates if the provided entity ID matches the URL ID.
+     *
+     * @param entityId the ID of the entity to validate
+     * @param urlId ID from the URL to compare against
+     * @throws InvalidEntityException if entityId is not equal to urlId
+     */
     private void validateMatchingIds(Long entityId, Long urlId) {
         if (!entityId.equals(urlId)) {
             throw new InvalidEntityException("Entity Id and path Id must be equals");
         }
     }
 
+    /**
+     * Validates if the provided entity is valid.
+     *
+     * @param attractionDto the entity to validate
+     * @throws InvalidEntityException if the entity is not valid.
+     */
     private void validateEntity(AttractionDto attractionDto) {
         StringBuilder sb = new StringBuilder();
 

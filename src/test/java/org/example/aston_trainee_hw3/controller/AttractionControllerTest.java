@@ -1,4 +1,4 @@
-package org.example.aston_trainee_hw3.web;
+package org.example.aston_trainee_hw3.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.aston_trainee_hw3.MockTestDtoData;
@@ -46,6 +46,16 @@ class AttractionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(dtos)));
+    }
+
+    @Test
+    void getById() throws Exception {
+        AttractionDto dto = MockTestDtoData.firstAttraction;
+        when(service.findById(dto.getId())).thenReturn(dto);
+        mockMvc.perform(get(String.format("/api/attraction/%d", dto.getId()))
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+                .andExpect(content().json(objectMapper.writeValueAsString(dto)));
     }
 
     @Test

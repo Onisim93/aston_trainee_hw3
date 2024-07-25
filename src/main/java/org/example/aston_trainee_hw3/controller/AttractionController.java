@@ -1,4 +1,4 @@
-package org.example.aston_trainee_hw3.web;
+package org.example.aston_trainee_hw3.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.example.aston_trainee_hw3.dto.AttractionDto;
@@ -8,6 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+
+/**
+ * Controller for handling CRUD operations related to attractions.
+ */
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api/attraction")
@@ -24,6 +28,11 @@ public class AttractionController {
         return service.findByCriteria(sortBy, type, localityName);
     }
 
+    @GetMapping("/{id:\\d+}")
+    @ResponseStatus(HttpStatus.OK)
+    public AttractionDto getById(@PathVariable Long id) {
+        return service.findById(id);
+    }
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)

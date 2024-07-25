@@ -19,6 +19,9 @@ public class LocalityDto {
     private Integer population;
     private Boolean hasMetro;
 
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String recommendation;
+
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)

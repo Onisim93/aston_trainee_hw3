@@ -1,4 +1,4 @@
-package org.example.aston_trainee_hw3.web;
+package org.example.aston_trainee_hw3.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.example.aston_trainee_hw3.MockTestDtoData;

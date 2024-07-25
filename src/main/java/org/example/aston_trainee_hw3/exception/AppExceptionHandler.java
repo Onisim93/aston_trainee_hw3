@@ -13,30 +13,33 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.servlet.NoHandlerFoundException;
 
+/**
+ * ExceptionHandler that handles exceptions thrown by controllers and provides centralized error handling.
+ */
 @ControllerAdvice
 public class AppExceptionHandler {
 
     @ExceptionHandler({TypeMismatchException.class, EntityNotFoundException.class, MultipartException.class})
     public ResponseEntity<ErrorResponse> entityException(Exception e) {
-        ErrorResponse response = new ErrorResponse(e.getMessage());
+        ErrorResponse response = new ErrorResponse(HttpStatus.BAD_REQUEST.value(), e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
     @ExceptionHandler({BindException.class, ValidationException.class, InvalidEntityException.class, DataIntegrityViolationException.class})
     public ResponseEntity<ErrorResponse> validateException(Exception e) {
-        ErrorResponse response = new ErrorResponse(e.getMessage());
+        ErrorResponse response = new ErrorResponse(HttpStatus.CONFLICT.value(), e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler({HttpRequestMethodNotSupportedException.class})
     public ResponseEntity<ErrorResponse> httpRequestMethodNotSupportedException(ServletException e) {
-        ErrorResponse response = new ErrorResponse(e.getMessage());
+        ErrorResponse response = new ErrorResponse(HttpStatus.METHOD_NOT_ALLOWED.value(), e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
-    @ExceptionHandler({NoHandlerFoundException.class})
+    @ExceptionHandler({NoHandlerFoundException.class, })
     public ResponseEntity<ErrorResponse> noHandlerFoundException(Exception e) {
-        ErrorResponse response = new ErrorResponse(e.getMessage());
+        ErrorResponse response = new ErrorResponse(HttpStatus.NOT_FOUND.value(), e.getMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
