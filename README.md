@@ -21,7 +21,7 @@ TestContainers автоматически настроит и запустит �
 ### Locality
 
 - Endpoint: /api/locality
-    - GET: Retrieve all localities
+    - GET: Retrieve all localities (optional params: withRec (true/false) (загружает данные о погоде из внешнего API))
     - POST: Create a new locality
         - Fields:
             - name: String (required)
@@ -29,7 +29,7 @@ TestContainers автоматически настроит и запустит �
             - hasMetro: Boolean (required)
 
 - Endpoint: /api/locality/{id}
-    - GET: Retrieve locality by ID
+    - GET: Retrieve locality by ID (optional params: withRec (true/false) (загружает данные о погоде из внешнего API))
     - PUT: Update locality by ID
         - Fields:
             - id: Long (required)
@@ -40,7 +40,7 @@ TestContainers автоматически настроит и запустит �
 ### Attraction
 
 - Endpoint: /api/attraction
-    - GET: Retrieve all attractions (optional filters: sort_by, type, locality_name, withRec)
+    - GET: Retrieve all attractions (optional filters: sort_by, type, locality_name)
     - POST: Create a new attraction
         - Fields:
             - name: String (required)
